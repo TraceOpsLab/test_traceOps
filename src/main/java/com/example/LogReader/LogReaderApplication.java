@@ -16,10 +16,6 @@ import java.util.Objects;
 //@SpringBootApplication
 public class LogReaderApplication {
 
-	/*public static void main(String[] args) {
-		SpringApplication.run(LogReaderApplication.class, args);
-	}*/
-
 	public static void main(String[] args) {
 		try {
 			// Load credentials from classpath
