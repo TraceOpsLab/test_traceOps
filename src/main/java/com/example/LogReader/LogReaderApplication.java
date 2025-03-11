@@ -2,22 +2,14 @@ package com.example.LogReader;
 
 import com.example.LogReader.service.FileReaderService;
 import com.google.auth.oauth2.ServiceAccountCredentials;
-import com.google.cloud.logging.*;
-import com.google.cloud.logging.Logging.EntryListOption;
+import com.google.cloud.logging.LogEntry;
+import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingOptions;
 
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 
