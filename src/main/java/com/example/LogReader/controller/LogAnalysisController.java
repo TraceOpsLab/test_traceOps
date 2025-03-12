@@ -27,7 +27,7 @@ public class LogAnalysisController {
         this.repository = repository;
     }
 
-    @PostMapping("/analyze")
+    @PostMapping("/persist")
     public ResponseEntity<AnalysisResponse> analyzeLogs(@RequestBody FilterDTO filterDTO) {
         // Process logs and persist to DB
         logAnalyzerService.processLogs(filterDTO);

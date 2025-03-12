@@ -22,7 +22,7 @@ public class GcpLoggingConfig {
     @Bean
     public Logging logging() throws IOException {
         // Load credentials from classpath
-        InputStream credentialsStream = Objects.requireNonNull(LogReaderApplication.class.getClassLoader().getResourceAsStream("static/smart-pattern-453207-h4-5aa3a8fec882.json"),
+        InputStream credentialsStream = Objects.requireNonNull(LogReaderApplication.class.getClassLoader().getResourceAsStream("static/smart-pattern-453207-h4-f16a27c5b9ec.json"),
                 "Service account file not found in resources");
         GoogleCredentials credentials = GoogleCredentials.fromStream(credentialsStream);
         return LoggingOptions.newBuilder()

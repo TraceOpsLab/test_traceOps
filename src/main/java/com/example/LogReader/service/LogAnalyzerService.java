@@ -79,7 +79,9 @@ public class LogAnalyzerService {
 
             }
         });
-        // 4. Analyze unique entries
+
+        //TODO: this should be part of a separate API. Current API will only fetch logs and dump to the db.
+       /* // 4. Analyze unique entries
         uniqueEntries.values().forEach(entry -> {
             LogAnalysisResult result = analyzeEntry(entry);
             repository.save(result);
@@ -88,7 +90,7 @@ public class LogAnalyzerService {
             //System.out.println(analysis);
             result.setGeminiAnalysis("Dummy_analysis");
             repository.save(result);
-        });
+        });*/
 
         if(!entries.hasNextPage()){
             System.out.println("Oops! no logs found...");
@@ -97,10 +99,6 @@ public class LogAnalyzerService {
 
 
         // 5. Update Excel generation
-        if (filter.isGenerateExcel()) {
-            generateExcelReport(uniqueEntries, frequencyMap);
-        }
-        // 5. Generate Excel if needed
         if (filter.isGenerateExcel()) {
             generateExcelReport(uniqueEntries, frequencyMap);
         }
