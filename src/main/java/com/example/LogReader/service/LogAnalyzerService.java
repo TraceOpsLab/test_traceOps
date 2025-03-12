@@ -5,16 +5,20 @@ import com.example.LogReader.converter.FilterConverter;
 import com.example.LogReader.dto.FilterDTO;
 import com.example.LogReader.dto.LogKey;
 import com.example.LogReader.entity.LogAnalysisResult;
+import com.example.LogReader.entity.LogTable;
 import com.example.LogReader.repository.LogAnalysisRepository;
+import com.example.LogReader.repository.LogTableRepository;
 import com.example.LogReader.utils.LogAnalyserUtils;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.Payload;
 import com.google.cloud.logging.Severity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -24,13 +28,12 @@ import static com.example.LogReader.utils.LogAnalyserUtils.generateExcelReport;
 import static com.example.LogReader.utils.LogAnalyserUtils.getDataFromLogJsonPayload;
 
 @Service
+@RequiredArgsConstructor
 public class LogAnalyzerService {
-    @Autowired
-    private Logging logging;
-    @Autowired
-    private LogAnalysisRepository repository;
-    @Autowired
-    private GeminiClient geminiClient;
+    private final Logging logging;
+    private final LogAnalysisRepository repository;
+    private final GeminiClient geminiClient;
+    private final LogTableRepository logTableRepository;
 
     Map<LogKey, Integer> frequencyMap = new HashMap<>();
     Map<LogKey, LogEntry> uniqueEntries = new HashMap<>();
@@ -62,6 +65,17 @@ public class LogAnalyzerService {
                 }else{
                     System.out.printf("Timestamp: %s | Log: %s%n", entry.getTimestamp(), entry.getPayload().toString());
                     LogKey key = new LogKey(entry.getPayload().toString(), entry.getSeverity(), entry.getResource().getType());
+
+                    LogTable logTable = LogTable.builder()
+                            .logName(entry.getLogName())
+                            .message(entry.getPayload().getData().toString())
+                            .severity(entry.getSeverity().toString())
+                            .timestamp(Instant.now())
+                            .build();
+
+
+                    logTableRepository.save(logTable);
+
                     frequencyMap.put(key, frequencyMap.getOrDefault(key, 0) + 1);
                     uniqueEntries.putIfAbsent(key, entry);
                 }

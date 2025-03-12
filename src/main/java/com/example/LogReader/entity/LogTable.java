@@ -1,14 +1,19 @@
 package com.example.LogReader.entity;
 
 import jakarta.persistence.*;
-import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 
 @Entity
 @Table(name = "logs")
-class LogEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class LogTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,13 +22,4 @@ class LogEntity {
     @Lob
     private String message;
     private Instant timestamp;
-
-    public LogEntity() {}
-
-    public LogEntity(String logName, String severity, String message, Instant timestamp) {
-        this.logName = logName;
-        this.severity = severity;
-        this.message = message;
-        this.timestamp = timestamp;
-    }
 }
