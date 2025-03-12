@@ -1,4 +1,4 @@
 resource.type = "cloud_run_revision"
 resource.labels.service_name = "demo-function-1"
 resource.labels.location = "us-central1"
- severity>=DEFAULT
+severity>=DEFAULT

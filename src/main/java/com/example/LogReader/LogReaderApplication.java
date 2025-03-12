@@ -57,9 +57,18 @@ public class LogReaderApplication {
 				// Fetch log entries
 				for (LogEntry entry : logging.listLogEntries(Logging.EntryListOption.filter(filter)).iterateAll()) {
 					if(Objects.isNull(entry.getPayload())){
-						System.out.printf("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
+						System.out.println("No Logs Available");
 					}else{
-						System.out.printf("Timestamp: %s | Log: %s%n", entry.getTimestamp(), entry.getPayload().toString());
+						System.out.printf("WOWOWOWOWOWOWOWO------------->  Timestamp: %s | Log: %s%n", entry.getTimestamp(), entry.getPayload().toString());
 					}
 				}
 			}
