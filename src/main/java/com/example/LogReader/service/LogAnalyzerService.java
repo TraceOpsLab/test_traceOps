@@ -61,18 +61,14 @@ public class LogAnalyzerService {
                     System.out.printf("No Logs Available");
                 }else{
                     System.out.printf("Timestamp: %s | Log: %s%n", entry.getTimestamp(), entry.getPayload().toString());
-                    LogKey key = new LogKey(entry.getPayload().toString(), entry.getSeverity(), entry.getResource().getType());
-
+                    LogKey key = new LogKey(entry.getPayload().toString(), entry.getSeverity().toString(), entry.getResource().getType());
                     LogTable logTable = LogTable.builder()
                             .logName(entry.getLogName())
                             .message(entry.getPayload().getData().toString())
                             .severity(entry.getSeverity().toString())
                             .timestamp(Instant.now())
                             .build();
-
-
                     logTableRepository.save(logTable);
-
                     frequencyMap.put(key, frequencyMap.getOrDefault(key, 0) + 1);
                     uniqueEntries.putIfAbsent(key, entry);
                 }
@@ -85,7 +81,7 @@ public class LogAnalyzerService {
                 String message = entry.getPayload().toString();
                 Severity severity = entry.getSeverity();
                 String resourceType = entry.getResource().getType();
-                LogKey key = new LogKey(message, severity, resourceType);
+                LogKey key = new LogKey(message, severity.toString(), resourceType);
                 uniqueEntries.merge(key, entry, (existing, replacement) -> existing);
 
             }

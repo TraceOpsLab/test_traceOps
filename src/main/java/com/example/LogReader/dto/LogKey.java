@@ -13,6 +13,6 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class LogKey {
     private final String message;
-    private final Severity severity;
+    private final String severity;
     private final String resourceType;
 }

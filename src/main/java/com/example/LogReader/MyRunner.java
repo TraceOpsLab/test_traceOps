@@ -33,7 +33,7 @@ public class MyRunner implements CommandLineRunner {
         labels.put("location","us-central1");
         //labels.put("type ","cloud_run_revision");
         // Process logs and persist to DB
-        logAnalyzerService.processLogs(new FilterDTO(null,null,null,null,labels,null,true));
+        //logAnalyzerService.processLogs(new FilterDTO(null,null,null,null,labels,null,true));
 
     }
 }

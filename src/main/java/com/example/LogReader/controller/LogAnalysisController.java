@@ -2,11 +2,15 @@ package com.example.LogReader.controller;
 
 import com.example.LogReader.dto.AnalysisResultDTO;
 import com.example.LogReader.dto.FilterDTO;
+import com.example.LogReader.dto.GeminiAnalysisResutDto;
 import com.example.LogReader.entity.LogAnalysisResult;
+import com.example.LogReader.entity.LogTable;
 import com.example.LogReader.repository.LogAnalysisRepository;
-import com.example.LogReader.response.AnalysisResponse;
+import com.example.LogReader.repository.LogTableRepository;
+import com.example.LogReader.service.GeminiAnalyzerService;
 import com.example.LogReader.service.LogAnalyzerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.LogReader.service.LogPersistService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,42 +18,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/logs")
 public class LogAnalysisController {
 
     private final LogAnalyzerService logAnalyzerService;
     private final LogAnalysisRepository repository;
-
-    @Autowired
-    public LogAnalysisController(LogAnalyzerService logAnalyzerService,
-                                 LogAnalysisRepository repository) {
-        this.logAnalyzerService = logAnalyzerService;
-        this.repository = repository;
-    }
+    private final LogPersistService logPersistService;
+    private final LogTableRepository logTableRepository;
+    private final GeminiAnalyzerService geminiAnalyzerService;
 
     @PostMapping("/persist")
-    public ResponseEntity<AnalysisResponse> analyzeLogs(@RequestBody FilterDTO filterDTO) {
+    public ResponseEntity<String> analyzeLogs(@RequestBody FilterDTO filterDTO) {
         // Process logs and persist to DB
-        logAnalyzerService.processLogs(filterDTO);
-
-        // Retrieve analysis results for response
-        List<AnalysisResultDTO> results = repository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-
-        String excelStatus = filterDTO.isGenerateExcel() ? "Excel generated" : "Excel not requested";
-
-        AnalysisResponse response = new AnalysisResponse("Analysis completed successfully", results, excelStatus);
-        return ResponseEntity.ok(response);
+        logPersistService.persistLogs(filterDTO);
+        return ResponseEntity.ok("Logs Persisted to Log Table Successfully");
     }
 
-    @GetMapping("/results")
-    public ResponseEntity<List<AnalysisResultDTO>> getAnalysisResults() {
-        List<AnalysisResultDTO> results = repository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(results);
+    @GetMapping("/ai/result")
+    public ResponseEntity<List<GeminiAnalysisResutDto>> viewAnalysis() {
+        return ResponseEntity.ok(geminiAnalyzerService.analyzeLogsFromAI());
     }
 
     private AnalysisResultDTO convertToDto(LogAnalysisResult entity) {
