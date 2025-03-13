@@ -8,14 +8,11 @@ import com.example.LogReader.entity.LogAnalysisResult;
 import com.example.LogReader.entity.LogTable;
 import com.example.LogReader.repository.LogAnalysisRepository;
 import com.example.LogReader.repository.LogTableRepository;
-import com.example.LogReader.utils.LogAnalyserUtils;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Logging;
-import com.google.cloud.logging.Payload;
 import com.google.cloud.logging.Severity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -95,16 +92,16 @@ public class LogAnalyzerService {
         });
 
         //TODO: this should be part of a separate API. Current API will only fetch logs and dump to the db.
-       /* // 4. Analyze unique entries
+        // 4. Analyze unique entries
         uniqueEntries.values().forEach(entry -> {
             LogAnalysisResult result = analyzeEntry(entry);
             repository.save(result);
             // Send to Gemini
-           // String analysis = geminiClient.analyzeError(result.getMessage());
-            //System.out.println(analysis);
-            result.setGeminiAnalysis("Dummy_analysis");
+            String analysis = geminiClient.analyzeError(entry.getPayload().getData().toString());
+            System.out.println("Analysis ::: " + analysis);
+            result.setGeminiAnalysis(analysis);
             repository.save(result);
-        });*/
+        });
 
         if(!entries.hasNextPage()){
             System.out.println("Oops! no logs found...");

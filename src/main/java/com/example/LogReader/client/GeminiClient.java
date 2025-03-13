@@ -14,21 +14,19 @@ import java.util.List;
 
 @Component
 public class GeminiClient {
-    @Value("${gemini.api.key:AIzaSyBRFUCxmaR1Wwt-eT0NY_4p_doq1ApfiCw}")
+    @Value("${gemini.api.key:AIzaSyB1Z84M4DEexB9Zv80tlvQdKj-FV_DRgMM}")
     private String apiKey;
 
     public String analyzeError(String errorMessage) {
         WebClient client = WebClient.builder()
-                .baseUrl("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent")
+                .baseUrl("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB1Z84M4DEexB9Zv80tlvQdKj-FV_DRgMM")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
         GeminiRequest request = new GeminiRequest(List.of(new Content(List.of(new Part(errorMessage)))));
 
         return client.post()
-                .uri(uriBuilder -> uriBuilder
-                        .queryParam("key", apiKey)
-                        .build())
+                .uri(uriBuilder -> uriBuilder.build())
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(GeminiResponse.class)
