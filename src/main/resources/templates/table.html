@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Exceptions Analysis</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>Exceptions Analysis</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Exception</th>
+        <th>Root Cause</th>
+        <th>Solution</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.exception}"></td>
+        <td th:text="${item.rootCause}"></td>
+        <td th:text="${item.solution}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

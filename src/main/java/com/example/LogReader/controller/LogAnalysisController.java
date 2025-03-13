@@ -12,12 +12,14 @@ import com.example.LogReader.service.LogAnalyzerService;
 import com.example.LogReader.service.LogPersistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/logs")
 public class LogAnalysisController {
@@ -38,6 +40,13 @@ public class LogAnalysisController {
     @GetMapping("/ai/result")
     public ResponseEntity<List<GeminiAnalysisResutDto>> viewAnalysis() {
         return ResponseEntity.ok(geminiAnalyzerService.analyzeLogsFromAI());
+    }
+
+    @GetMapping("/web/ai/result")
+    public String showTable(Model model) {
+        List<GeminiAnalysisResutDto> result = geminiAnalyzerService.analyzeLogsFromAI();
+        model.addAttribute("items", result);
+        return "table";
     }
 
     private AnalysisResultDTO convertToDto(LogAnalysisResult entity) {
