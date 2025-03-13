@@ -46,7 +46,7 @@ public class LogAnalysisController {
     public String showTable(Model model) {
         List<GeminiAnalysisResutDto> result = geminiAnalyzerService.analyzeLogsFromAI();
         model.addAttribute("items", result);
-        return "table";
+        return "beautified";
     }
 
     private AnalysisResultDTO convertToDto(LogAnalysisResult entity) {
